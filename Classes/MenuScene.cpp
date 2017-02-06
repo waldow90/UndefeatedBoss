@@ -29,19 +29,22 @@ bool MenuScene::init()
     {
         return false;
     }
+    //Start of MenuScene
     CCLOG( "Entering MenuScene");
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
+    //create MenuItems with sprite
     auto menu_item_play = MenuItemImage::create("Animation/MenuScene/PlayButton/PlayButton_(1).png"
                                                 , "Animation/MenuScene/PlayButton/PlayButton_(30).png"
-                                                , CC_CALLBACK_1( MenuScene::Settings, this ));
+                                                , CC_CALLBACK_1( MenuScene::Play, this ));
     
 
     auto menu_item_setting = MenuItemImage::create("Animation/MenuScene/SettingButton/SettingButton_1To30_(1).png"
                                                 , "Animation/MenuScene/SettingButton/SettingButton_1To30_(30).png"
-                                                , CC_CALLBACK_1( MenuScene::Play, this ));
+                                                , CC_CALLBACK_1( MenuScene::Settings, this ));
     
+    //allocating sprite menu
     menu_item_play -> setPosition( visibleSize.width/2, visibleSize.height/3 * 2 );
     menu_item_play -> setScale( visibleSize.width/5 / menu_item_play->getContentSize().width
                                , visibleSize.height/4 / menu_item_play->getContentSize().height );
@@ -50,6 +53,7 @@ bool MenuScene::init()
     menu_item_setting -> setScale( visibleSize.width/5 / menu_item_play->getContentSize().width
                                , visibleSize.height/4 / menu_item_play->getContentSize().height );
     
+    //Positioning menu node
     auto *menu = Menu::create(menu_item_play,menu_item_setting,NULL);
     menu -> setPosition( Point(0,0) );
     
