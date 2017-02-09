@@ -9,6 +9,7 @@
 #ifndef Definition_h
 #define Definition_h
 
+//== scene transaction ==//
 #define DISPALY_TIME_OF_LOADING_SEQUENCE 1.5f
 
 

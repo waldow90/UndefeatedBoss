@@ -7,7 +7,7 @@
 //
 
 #include "MenuScene.h"
-#include "GameScene.h"
+#include "CharacterSelectScene.h"
 #include "SimpleAudioEngine.h"
 #include "Definition.h"
 
@@ -86,8 +86,8 @@ bool MenuScene::init()
 
 void MenuScene::Play(cocos2d::Ref *pSender)
 {
-    auto scene = GameScene::createScene();
-    CCLOG("Play");
+    CCLOG("Go To CharacterSelect");
+    auto scene = CharacterSelectScene::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(DISPALY_TIME_OF_LOADING_SEQUENCE, scene));
 }
 

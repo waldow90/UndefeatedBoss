@@ -9,8 +9,15 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "Definition.h"
+#include "BattlePhase.h"
+//the selected character name is delivered
+#include "CharacterSelectScene.h"
 
+cocos2d::__String CharacterSelectScene::CharacterName; //given character name static variable
+
+using namespace BattlePhase;
 USING_NS_CC;
+
 
 Scene* GameScene::createScene()
 {
@@ -28,10 +35,14 @@ bool GameScene::init()
     {
         return false;
     }
-    CCLOG( "Entering GameScne");
+    CCLOG( "CharacterSelectScene Entered");
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    //setting inital selected character stat
+    Player Player1;
+    Player1.SetCharacterStat( CharacterSelectScene::CharacterName );
     
     return true;
 }
