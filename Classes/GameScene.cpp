@@ -40,9 +40,10 @@ bool GameScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
     //== Character Stat ==//
-    //Player* Player1 = new Player(); //create class of player
-    // comfirming the character name
+    //load and set character stat
+    CharacterSelectScene::Player1.SetCharacterStat();
     
+    // comfirming the character name
     CCLOG("Charcater Name : %s", CharacterSelectScene::Player1.GetCharacterName().getCString() );
     //setting inital selected character stat
     

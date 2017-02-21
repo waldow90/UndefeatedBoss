@@ -17,6 +17,10 @@ void Player::SelectCharacter( int SlotNumber )
 {
     CharacterNumber = SlotNumber;
     
+    if ( CharacterNumber == 1 )
+    {
+        Name = "Test";
+    }
 }
 
 void Player::SetCharacterStat()
