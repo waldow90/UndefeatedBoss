@@ -13,11 +13,10 @@
 //the selected character name is delivered
 #include "CharacterSelectScene.h"
 
-cocos2d::__String CharacterSelectScene::CharacterName; //given character name static variable
-
 using namespace BattlePhase;
 USING_NS_CC;
-
+//static class declare
+Player CharacterSelectScene::Player1;
 
 Scene* GameScene::createScene()
 {
@@ -35,14 +34,20 @@ bool GameScene::init()
     {
         return false;
     }
-    CCLOG( "CharacterSelectScene Entered");
+    CCLOG( "GameScene Entered");
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
+    //== Character Stat ==//
+    //Player* Player1 = new Player(); //create class of player
+    // comfirming the character name
+    
+    CCLOG("Charcater Name : %s", CharacterSelectScene::Player1.GetCharacterName().getCString() );
     //setting inital selected character stat
-    Player Player1;
-    Player1.SetCharacterStat( CharacterSelectScene::CharacterName );
+    
+    //==Monseter Stat ==//
+    
     
     return true;
 }

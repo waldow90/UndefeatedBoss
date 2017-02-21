@@ -18,26 +18,27 @@ namespace BattlePhase {
     {
     public:
         //==character selection==//
-        void SetCharacterStat(cocos2d::__String CharacterName);
-        
+        //input character name and stat
+        void SelectCharacter( int SlotNumber );
+        void SetCharacterStat();
+        //confirm character name and stat
+        cocos2d::__String GetCharacterName();
         //==Stans of Character at battlephase==//
         float GivePhysicalAttackToMonster();
         //void GiveMagicalAttackToMonster();
         //void DefenseAgainstMonster();
         //take damage from the monster
         void SetTakenDamageFromMonster(float M_Damage);
-        
         //==EVENT==//
         //void GainExperience();
         bool LevelUp();
         
-        
     protected:
         //==CHARACTER SELECTION==//
+        int CharacterNumber;
         cocos2d::__String Name;
-        
         //==STATS OF CHARACTER==//
-        int Level = 1;
+        int Level;
         //survival
         float Currnet_Health;
         float Max_Health;
@@ -48,27 +49,26 @@ namespace BattlePhase {
     class Monster
     {
     public:
+        Monster();
+        ~Monster();
         //==Stans of Monster at battle phase==//
         float GivePhysicalAttackToCharacter();
         void SetTakenDamageFromCharacter(float C_Damage);
-        
         //==Setting the stat of a monster==//
         void MonsterLevelUp();
-        
         //==Event==//
         void MonsterKilled();
         
     protected:
         //==Type Of Monster==//
         cocos2d::__String Type;
-        
         //==Stats of Monster==//
-        int Level = 1;
+        int Level;
         //survival
         float Current_Health;
-        float Max_Health = 5;
+        float Max_Health;
         //physical damage
-        float PhysicalPower = 1;
+        float PhysicalPower;
     };
 }
 

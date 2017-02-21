@@ -7,19 +7,36 @@
 //
 
 #include "BattlePhase.h"
+#include "cocos2d.h"
 
 using namespace BattlePhase;
 //==Character Selection==//
-void Player::SetCharacterStat(cocos2d::__String CharacterName)
+//input character name and stat
+
+void Player::SelectCharacter( int SlotNumber )
+{
+    CharacterNumber = SlotNumber;
+    
+}
+
+void Player::SetCharacterStat()
 {
     //allocating character stat
-    if( strcmp( CharacterName.getCString() , "Test"))
+    if( strcmp( Name.getCString() , "Test"))
     {
         Max_Health = 10;
         Currnet_Health = Max_Health;
         PhysicalPower = 1;
     }
 }
+
+//confirm character stat and name
+
+cocos2d::__String Player::GetCharacterName()
+{
+    return Name;
+}
+
 
 //==battle phase function of the character==//
 float Player::GivePhysicalAttackToMonster()
@@ -62,11 +79,11 @@ float Monster::GivePhysicalAttackToCharacter()
 void Monster::MonsterLevelUp()
 {
     //increase level of monster
-    Monster::Level += 1;
+    Level += 1;
     
     //upgrade maxhealth of monster
-    Monster::Max_Health += 5;
-    Monster::PhysicalPower += 1;
+    Max_Health += 5;
+    PhysicalPower += 1;
 }
 
 void Monster::MonsterKilled()
@@ -74,16 +91,16 @@ void Monster::MonsterKilled()
     Monster::MonsterLevelUp();
     
     //reset monster health to full
-    Monster::Current_Health = Monster::Max_Health;
+    Current_Health = Monster::Max_Health;
 }
 
 void Monster::SetTakenDamageFromCharacter(float C_Damge)
 {
     //take damage from health
-    Monster::Current_Health -= C_Damge;
+    Current_Health -= C_Damge;
     
-    if( Monster::Current_Health <= 0)
+    if( Current_Health <= 0)
     {
-        Monster::MonsterKilled();
+        MonsterKilled();
     }
 }

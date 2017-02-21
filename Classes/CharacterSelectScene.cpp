@@ -37,24 +37,28 @@ bool CharacterSelectScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
     //test character select slot
-    auto TestCharacterSelect = MenuItemImage::create("Animation/CharacterSelectScene/RedBlock_burned.png"
+    auto CharacterSlot_1 = MenuItemImage::create("Animation/CharacterSelectScene/RedBlock_burned.png"
                                                     , "Animation/CharacterSelectScene/RedBlock_burned.png"
-                                                    ,CC_CALLBACK_1(CharacterSelectScene::SelectCharacter_Test,this)
+                                                    ,CC_CALLBACK_1(CharacterSelectScene::SelectCharacter_1,this)
                                                      );
-    TestCharacterSelect -> setScale( visibleSize.width/3 / TestCharacterSelect->getContentSize().width
-                                    , visibleSize.height / TestCharacterSelect->getContentSize().height );
-    TestCharacterSelect -> setAnchorPoint( Point(0,0) );
-    TestCharacterSelect -> setPosition( origin.x, origin.y);
+    CharacterSlot_1 -> setScale( visibleSize.width/3 / CharacterSlot_1->getContentSize().width
+                                    , visibleSize.height / CharacterSlot_1->getContentSize().height );
+    CharacterSlot_1 -> setAnchorPoint( Point(0,0) );
+    CharacterSlot_1 -> setPosition( origin.x, origin.y);
     
-    this -> addChild(TestCharacterSelect);
+    //Positioning menu node
+    auto *menu = Menu::create( CharacterSlot_1,NULL );
+    menu -> setPosition( Point(0,0) );
+    
+    this -> addChild(menu);
     
     return true;
 }
 //== select a character and go to gamescene ==//
-void CharacterSelectScene::SelectCharacter_Test(cocos2d::Ref *pSender)
+void CharacterSelectScene::SelectCharacter_1(cocos2d::Ref *pSender)
 {
     //deliver character name to gamescene
-    CharacterName = "Test";
+    Player1.SelectCharacter(1);
     
     //Scene transit
     CCLOG("Go To GameScene");

@@ -10,6 +10,9 @@
 #define __CHARACTER_SELECT_SCENE_H__
 
 #include "cocos2d.h"
+#include "BattlePhase.h"
+
+using namespace BattlePhase;
 
 class CharacterSelectScene : public cocos2d::Layer
 {
@@ -28,8 +31,9 @@ public:
     cocos2d::Menu *TestCharacterSelect;
     
     //character select
-    void SelectCharacter_Test(Ref *pSender);
-    static cocos2d::__String CharacterName;
+    void SelectCharacter_1(Ref *pSender);
+    //create static Player class
+    static Player Player1;
     
 };
 
