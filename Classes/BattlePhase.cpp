@@ -72,14 +72,7 @@ bool Player::LevelUp()
     return true;
 }
 
-//==battle phase function of a monster==//
-float Monster::GivePhysicalAttackToCharacter()
-{
-    //caculating the damage of a monster onto the charater
-    float M_Damage = Monster::PhysicalPower;
-    return M_Damage;
-}
-
+//==Events assoiated with Monster==//
 void Monster::MonsterLevelUp()
 {
     //increase level of monster
@@ -97,6 +90,16 @@ void Monster::MonsterKilled()
     //reset monster health to full
     Current_Health = Monster::Max_Health;
 }
+
+//==battle phase function of a monster==//
+float Monster::GivePhysicalAttackToCharacter()
+{
+    //caculating the damage of a monster onto the charater
+    float M_Damage = Monster::PhysicalPower;
+    return M_Damage;
+}
+
+
 
 void Monster::SetTakenDamageFromCharacter(float C_Damge)
 {

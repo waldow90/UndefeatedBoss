@@ -36,7 +36,7 @@ bool CharacterSelectScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    //test character select slot
+    //Slot 1
     auto CharacterSlot_1 = MenuItemImage::create("Animation/CharacterSelectScene/RedBlock_burned.png"
                                                     , "Animation/CharacterSelectScene/RedBlock_burned.png"
                                                     ,CC_CALLBACK_1(CharacterSelectScene::SelectCharacter_1,this)
@@ -45,6 +45,8 @@ bool CharacterSelectScene::init()
                                     , visibleSize.height / CharacterSlot_1->getContentSize().height );
     CharacterSlot_1 -> setAnchorPoint( Point(0,0) );
     CharacterSlot_1 -> setPosition( origin.x, origin.y);
+    
+    //Slot 2
     
     //Positioning menu node
     auto *menu = Menu::create( CharacterSlot_1,NULL );

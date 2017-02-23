@@ -30,7 +30,7 @@ public:
     //sprite
     cocos2d::Menu *TestCharacterSelect;
     
-    //character select
+    //==Character Select==//
     void SelectCharacter_1(Ref *pSender);
     //create static Player class
     static Player Player1;

@@ -10,23 +10,30 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "BattlePhase.h"
+
+using namespace BattlePhase;
 
 class GameScene : public cocos2d::Layer
 {
 public:
+    //==Functions needed to Create and Init the Scene==//
     static cocos2d::Scene* createScene();
-    
     virtual bool init();
-    
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
-    
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
     
-    //sprite
-    cocos2d::Sprite *backgroundSprite;
+    //==Assosiated with Touch==//
+    bool onTouchBegan( cocos2d::Touch* touch, cocos2d::Event* event);
+    //void onTouchMoved( cocos2d::Touch* touch, cocos2d::Event* event);
+    //void onTouchEnded( cocos2d::Touch* touch, cocos2d::Event* event);
+    //Touched Location
+    float TouchBeganX, TouchBeganY;
     
+    
+    //== Variables for Battle ==//
+    //create Monster Class
+    Monster SpawnedMonster;
     
 };
 

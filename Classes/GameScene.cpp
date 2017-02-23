@@ -29,26 +29,42 @@ Scene* GameScene::createScene()
 
 bool GameScene::init()
 {
-    
+    //== Base of GameScene init ==//
     if ( !Layer::init() )
     {
         return false;
     }
     CCLOG( "GameScene Entered");
-    
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    //== touch listenter ==//
+    //touch listener
+    auto listener = EventListenerTouchOneByOne::create();
+    listener -> setSwallowTouches(true);
+    //on touch began
+    listener -> onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+    _eventDispatcher -> addEventListenerWithSceneGraphPriority(listener, this);
+    
     
     //== Character Stat ==//
     //load and set character stat
     CharacterSelectScene::Player1.SetCharacterStat();
-    
     // comfirming the character name
     CCLOG("Charcater Name : %s", CharacterSelectScene::Player1.GetCharacterName().getCString() );
-    //setting inital selected character stat
     
     //==Monseter Stat ==//
     
+    
+    return true;
+}
+
+bool GameScene::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+    TouchBeganX = touch -> getLocation().x;
+    TouchBeganY = touch -> getLocation().y;
+    
+    CCLOG("Location : (%f, %f)", TouchBeganX, TouchBeganY);
     
     return true;
 }

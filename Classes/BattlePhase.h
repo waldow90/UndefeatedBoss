@@ -49,8 +49,6 @@ namespace BattlePhase {
     class Monster
     {
     public:
-        Monster();
-        ~Monster();
         //==Stans of Monster at battle phase==//
         float GivePhysicalAttackToCharacter();
         void SetTakenDamageFromCharacter(float C_Damage);
@@ -58,7 +56,6 @@ namespace BattlePhase {
         void MonsterLevelUp();
         //==Event==//
         void MonsterKilled();
-        
     protected:
         //==Type Of Monster==//
         cocos2d::__String Type;
