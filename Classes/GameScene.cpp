@@ -44,6 +44,8 @@ bool GameScene::init()
     listener -> setSwallowTouches(true);
     //on touch began
     listener -> onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+    listener -> onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
+    listener -> onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
     _eventDispatcher -> addEventListenerWithSceneGraphPriority(listener, this);
     
     
@@ -64,7 +66,23 @@ bool GameScene::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
     TouchBeganX = touch -> getLocation().x;
     TouchBeganY = touch -> getLocation().y;
     
-    CCLOG("Location : (%f, %f)", TouchBeganX, TouchBeganY);
+    CCLOG("Began : (%f, %f)", TouchBeganX, TouchBeganY);
     
     return true;
+}
+
+void GameScene::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+    TouchMovedX = touch -> getLocation().x;
+    TouchMovedY = touch -> getLocation().y;
+    
+    CCLOG("Moved : (%f, %f)", TouchMovedX, TouchMovedY);
+}
+
+void GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+    TouchEndedX = touch -> getLocation().x;
+    TouchEndedY = touch -> getLocation().y;
+    
+    CCLOG("Ended : (%f, %f)", TouchEndedX, TouchEndedY);
 }

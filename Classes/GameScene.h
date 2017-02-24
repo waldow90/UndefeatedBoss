@@ -25,12 +25,12 @@ public:
     
     //==Assosiated with Touch==//
     bool onTouchBegan( cocos2d::Touch* touch, cocos2d::Event* event);
-    //void onTouchMoved( cocos2d::Touch* touch, cocos2d::Event* event);
-    //void onTouchEnded( cocos2d::Touch* touch, cocos2d::Event* event);
+    void onTouchMoved( cocos2d::Touch* touch, cocos2d::Event* event);
+    void onTouchEnded( cocos2d::Touch* touch, cocos2d::Event* event);
     //Touched Location
     float TouchBeganX, TouchBeganY;
-    
-    
+    float TouchMovedX, TouchMovedY;
+    float TouchEndedX, TouchEndedY;
     //== Variables for Battle ==//
     //create Monster Class
     Monster SpawnedMonster;

@@ -27,9 +27,6 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(CharacterSelectScene);
     
-    //sprite
-    cocos2d::Menu *TestCharacterSelect;
-    
     //==Character Select==//
     void SelectCharacter_1(Ref *pSender);
     //create static Player class
