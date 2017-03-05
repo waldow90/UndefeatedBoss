@@ -21,32 +21,33 @@ void Player::SelectCharacter( int SlotNumber )
     {
         Name = "Test";
     }
+    // comfirming the character name
+    CCLOG("Charcater Name : %s", Name.getCString() );
+    
 }
 
 void Player::SetCharacterStat()
 {
     //allocating character stat
-    if( strcmp( Name.getCString() , "Test"))
+    if( strcmp( Name.getCString() , "Test") == 0 ) //strcmp returns 0 when two strings are same
     {
+        Level = 1;
         Max_Health = 10;
         Currnet_Health = Max_Health;
         PhysicalPower = 1;
+        
+        CCLOG("Level : %d, Max_Health : %f, PhysicalPower %f", Level, Max_Health, PhysicalPower);
     }
+    
 }
-
-//confirm character stat and name
-
-cocos2d::__String Player::GetCharacterName()
-{
-    return Name;
-}
-
 
 //==battle phase function of the character==//
-float Player::GivePhysicalAttackToMonster()
+float Player::GivePhysicalAttackToMonster(float BeganTouch = 0,float EndTouch = 0)
 {
+    
     //caculating the damage of character onto a monster
     float C_Damage = PhysicalPower;
+    CCLOG("Give Damage To Monster By : %f", C_Damage);
     return C_Damage;
 }
 
@@ -101,13 +102,15 @@ float Monster::GivePhysicalAttackToCharacter()
 
 
 
-void Monster::SetTakenDamageFromCharacter(float C_Damge)
+void Monster::SetTakenDamageFromCharacter(float C_Damage)
 {
     //take damage from health
-    Current_Health -= C_Damge;
+    Current_Health -= C_Damage;
+    CCLOG("Monster Damage Taken By : %f", C_Damage);
     
     if( Current_Health <= 0)
     {
         MonsterKilled();
+        CCLOG("Monster Killed");
     }
 }

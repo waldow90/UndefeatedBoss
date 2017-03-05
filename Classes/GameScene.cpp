@@ -17,6 +17,7 @@ using namespace BattlePhase;
 USING_NS_CC;
 //static class declare
 Player CharacterSelectScene::Player1;
+Monster GameScene::SpawnedMonster;
 
 Scene* GameScene::createScene()
 {
@@ -52,9 +53,6 @@ bool GameScene::init()
     //== Character Stat ==//
     //load and set character stat
     CharacterSelectScene::Player1.SetCharacterStat();
-    // comfirming the character name
-    CCLOG("Charcater Name : %s", CharacterSelectScene::Player1.GetCharacterName().getCString() );
-    
     //==Monseter Stat ==//
     
     
@@ -66,7 +64,7 @@ bool GameScene::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
     TouchBeganX = touch -> getLocation().x;
     TouchBeganY = touch -> getLocation().y;
     
-    CCLOG("Began : (%f, %f)", TouchBeganX, TouchBeganY);
+    CCLOG("Touch Began");
     
     return true;
 }
@@ -84,5 +82,11 @@ void GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
     TouchEndedX = touch -> getLocation().x;
     TouchEndedY = touch -> getLocation().y;
     
+    CCLOG("Began : (%f, %f)", TouchBeganX, TouchBeganY);
     CCLOG("Ended : (%f, %f)", TouchEndedX, TouchEndedY);
+    
+    float Damage;
+    Damage = CharacterSelectScene::Player1.GivePhysicalAttackToMonster(TouchEndedX, TouchBeganX);
+    GameScene::SpawnedMonster.SetTakenDamageFromCharacter(Damage);
+    
 }

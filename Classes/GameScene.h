@@ -33,7 +33,7 @@ public:
     float TouchEndedX, TouchEndedY;
     //== Variables for Battle ==//
     //create Monster Class
-    Monster SpawnedMonster;
+    static Monster SpawnedMonster;
     
 };
 
