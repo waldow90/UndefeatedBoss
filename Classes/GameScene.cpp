@@ -36,8 +36,8 @@ bool GameScene::init()
         return false;
     }
     CCLOG( "GameScene Entered");
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    visibleSize = Director::getInstance()->getVisibleSize();
+    origin = Director::getInstance()->getVisibleOrigin();
     
     //== touch listenter ==//
     //touch listener
@@ -55,7 +55,14 @@ bool GameScene::init()
     CharacterSelectScene::Player1.SetCharacterStat();
     //==Monseter Stat ==//
     
-    
+    /*
+    //== Battle Phase ==//
+    //Monster Killed
+    if ( GameScene::SpawnedMonster.MonsterKilled() )
+    {
+        CharacterSelectScene::Player1.GainExperience( GameScene::SpawnedMonster.GetMonsterLevel() );
+    }
+    */
     return true;
 }
 
@@ -85,8 +92,27 @@ void GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
     CCLOG("Began : (%f, %f)", TouchBeganX, TouchBeganY);
     CCLOG("Ended : (%f, %f)", TouchEndedX, TouchEndedY);
     
-    float Damage;
-    Damage = CharacterSelectScene::Player1.GivePhysicalAttackToMonster(TouchEndedX, TouchBeganX);
-    GameScene::SpawnedMonster.SetTakenDamageFromCharacter(Damage);
+    //calculate multiplyer
+    float TouchDistance = sqrtf( powf((TouchBeganX - TouchEndedX)/visibleSize.width, 2)
+                                + powf( (TouchBeganY - TouchEndedY)/visibleSize.height, 2) );
+    CCLOG("Distance : %f", TouchDistance);
+    
+    //cast a spell
+    if( TouchDistance < 0.05 ) //if there is no drag
+    {
+        CCLOG("Need to Make Spell");
+        return;
+    }
+    //do physical Damage
+    else
+    {
+        //when touch ended damage function began
+        float Damage;
+        Damage = CharacterSelectScene::Player1.GivePhysicalAttackToMonster(TouchDistance);
+        GameScene::SpawnedMonster.SetTakenDamageFromCharacter(Damage);
+        
+        //attack animation
+    }
+    
     
 }

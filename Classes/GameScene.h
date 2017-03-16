@@ -23,6 +23,10 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
     
+    //screen size
+    cocos2d::Size visibleSize;
+    cocos2d::Vec2 origin;
+    
     //==Assosiated with Touch==//
     bool onTouchBegan( cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchMoved( cocos2d::Touch* touch, cocos2d::Event* event);

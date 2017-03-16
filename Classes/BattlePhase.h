@@ -22,13 +22,13 @@ namespace BattlePhase {
         void SelectCharacter( int SlotNumber );
         void SetCharacterStat();
         //==Stans of Character at battlephase==//
-        float GivePhysicalAttackToMonster(float BeganTouch, float EndTouch);
+        float GivePhysicalAttackToMonster(float TouchDistance);
         //void GiveMagicalAttackToMonster();
         //void DefenseAgainstMonster();
         //take damage from the monster
         void SetTakenDamageFromMonster(float M_Damage);
         //==EVENT==//
-        //void GainExperience();
+        void GainExperience( int MonsterLevel );
         bool LevelUp();
         
     protected:
@@ -37,6 +37,9 @@ namespace BattlePhase {
         cocos2d::__String Name;
         //==STATS OF CHARACTER==//
         int Level;
+        float Experience_Max;
+        float Experience_Current;
+        
         //survival
         float Currnet_Health;
         float Max_Health;
@@ -53,8 +56,9 @@ namespace BattlePhase {
         void SetTakenDamageFromCharacter(float C_Damage);
         //==Setting the stat of a monster==//
         void MonsterLevelUp();
+        int GetMonsterLevel();
         //==Event==//
-        void MonsterKilled();
+        bool MonsterKilled();
     protected:
         //==Type Of Monster==//
         cocos2d::__String Type;

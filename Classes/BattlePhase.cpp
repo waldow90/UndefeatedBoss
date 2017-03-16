@@ -23,7 +23,8 @@ void Player::SelectCharacter( int SlotNumber )
     }
     // comfirming the character name
     CCLOG("Charcater Name : %s", Name.getCString() );
-    
+ 
+    return;
 }
 
 void Player::SetCharacterStat()
@@ -31,7 +32,12 @@ void Player::SetCharacterStat()
     //allocating character stat
     if( strcmp( Name.getCString() , "Test") == 0 ) //strcmp returns 0 when two strings are same
     {
+        //Level
         Level = 1;
+        Experience_Max = 1;
+        Experience_Current = 0;
+        
+        //Stats
         Max_Health = 10;
         Currnet_Health = Max_Health;
         PhysicalPower = 1;
@@ -39,15 +45,18 @@ void Player::SetCharacterStat()
         CCLOG("Level : %d, Max_Health : %f, PhysicalPower %f", Level, Max_Health, PhysicalPower);
     }
     
+    return;
 }
 
 //==battle phase function of the character==//
-float Player::GivePhysicalAttackToMonster(float BeganTouch = 0,float EndTouch = 0)
+float Player::GivePhysicalAttackToMonster(float TouchDistance)
 {
-    
+    //do physical attack
+    float Amplifyer = 1.5*TouchDistance;
     //caculating the damage of character onto a monster
-    float C_Damage = PhysicalPower;
+    float C_Damage = PhysicalPower * Amplifyer;
     CCLOG("Give Damage To Monster By : %f", C_Damage);
+    
     return C_Damage;
 }
 
@@ -55,11 +64,15 @@ void Player::SetTakenDamageFromMonster(float M_Damage)
 {
     //take damage from health
     Currnet_Health -= M_Damage;
+    
+    return;
 }
 
+//== Stat Assosiated Functions ==//
 bool Player::LevelUp()
 {
     Level += 1;
+    Experience_Max += 5;
     
     //==character stat upgrades differ with character classes==//
     
@@ -73,6 +86,14 @@ bool Player::LevelUp()
     return true;
 }
 
+void Player::GainExperience(int MonsterLevel)
+{
+    
+    Experience_Current += 1.5*MonsterLevel;
+    
+    return;
+}
+
 //==Events assoiated with Monster==//
 void Monster::MonsterLevelUp()
 {
@@ -84,12 +105,21 @@ void Monster::MonsterLevelUp()
     PhysicalPower += 1;
 }
 
-void Monster::MonsterKilled()
+int Monster::GetMonsterLevel()
 {
+    CCLOG("Monster Level : %d", Level);
+    return Level;
+}
+
+bool Monster::MonsterKilled()
+{
+    //monster level up
     Monster::MonsterLevelUp();
     
     //reset monster health to full
     Current_Health = Monster::Max_Health;
+    
+    return true;
 }
 
 //==battle phase function of a monster==//
@@ -107,10 +137,10 @@ void Monster::SetTakenDamageFromCharacter(float C_Damage)
     //take damage from health
     Current_Health -= C_Damage;
     CCLOG("Monster Damage Taken By : %f", C_Damage);
-    
+    CCLOG("Current Monster Health : %f", Current_Health);
     if( Current_Health <= 0)
     {
-        MonsterKilled();
         CCLOG("Monster Killed");
+        MonsterKilled();
     }
 }
