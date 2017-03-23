@@ -8,6 +8,8 @@
 
 #include "BattlePhase.h"
 #include "cocos2d.h"
+//for valance
+#include "Definition.h"
 
 using namespace BattlePhase;
 //==Character Selection==//
@@ -39,10 +41,11 @@ void Player::SetCharacterStat()
         
         //Stats
         Max_Health = 10;
-        Currnet_Health = Max_Health;
+        Current_Health = Max_Health;
         PhysicalPower = 1;
         
-        CCLOG("Level : %d, Max_Health : %f, PhysicalPower %f", Level, Max_Health, PhysicalPower);
+        PLAYER_STAT_CHECK;
+        
     }
     
     return;
@@ -52,9 +55,12 @@ void Player::SetCharacterStat()
 float Player::GivePhysicalAttackToMonster(float TouchDistance)
 {
     //do physical attack
-    float Amplifyer = 1.5*TouchDistance;
+    //load amplifier
+    float Amplifier = ATTACK_AMPLIFIER;
+    //times with touchdistance
+    Amplifier *= TouchDistance;
     //caculating the damage of character onto a monster
-    float C_Damage = PhysicalPower * Amplifyer;
+    float C_Damage = PhysicalPower * Amplifier;
     CCLOG("Give Damage To Monster By : %f", C_Damage);
     
     return C_Damage;
@@ -63,38 +69,50 @@ float Player::GivePhysicalAttackToMonster(float TouchDistance)
 void Player::SetTakenDamageFromMonster(float M_Damage)
 {
     //take damage from health
-    Currnet_Health -= M_Damage;
-    
+    Current_Health -= M_Damage;
+    CCLOG("Character Damage Taken By : %f", M_Damage);
+    CCLOG("Current Character Health : %f", Current_Health);
     return;
 }
 
-//== Stat Assosiated Functions ==//
+//== Stat Assosiated Functions in battle phase ==//
 bool Player::LevelUp()
 {
     Level += 1;
-    Experience_Max += 5;
-    
+    CCLOG("Character Level UP");
     //==character stat upgrades differ with character classes==//
     
     // 1. Test
-    if( strcmp( Name.getCString() , "Test"))
+    if( !strcmp( Name.getCString() , "Test") )// if text is matched strcmp returns 0
     {
         Max_Health += 5;
+        //restore health to full
+        Current_Health = Max_Health;
         PhysicalPower += 1;
+        Experience_Max += 5;
     }
+    
+    PLAYER_STAT_CHECK;
     
     return true;
 }
 
 void Player::GainExperience(int MonsterLevel)
 {
+    //load experience amplifier
+    float GivenExperience = EXPERIENCE_GIVEN_TO_CHARACTER;
+    //give experience to character
+    Experience_Current += GivenExperience*MonsterLevel;
+    CCLOG("Current Experience : %f", Experience_Current);
     
-    Experience_Current += 1.5*MonsterLevel;
-    
+    if ( Experience_Current >= Experience_Max )
+    {
+        LevelUp();
+    }
     return;
 }
 
-//==Events assoiated with Monster==//
+//==Events assoiated with Monster in battle phase==//
 void Monster::MonsterLevelUp()
 {
     //increase level of monster
@@ -109,6 +127,19 @@ int Monster::GetMonsterLevel()
 {
     CCLOG("Monster Level : %d", Level);
     return Level;
+}
+
+bool Monster::IsMonsterKilled()
+{
+    if ( Current_Health > 0 )
+    {
+        //CCLOG("Monster Health Check : %f", Current_Health);
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 bool Monster::MonsterKilled()
@@ -127,10 +158,15 @@ float Monster::GivePhysicalAttackToCharacter()
 {
     //caculating the damage of a monster onto the charater
     float M_Damage = Monster::PhysicalPower;
+    CCLOG("Give Character Damage By : %f", M_Damage);
     return M_Damage;
 }
 
-
+float Monster::GetAttackRate()
+{
+    float AR = AttackRate;
+    return AR;
+}
 
 void Monster::SetTakenDamageFromCharacter(float C_Damage)
 {
@@ -138,9 +174,5 @@ void Monster::SetTakenDamageFromCharacter(float C_Damage)
     Current_Health -= C_Damage;
     CCLOG("Monster Damage Taken By : %f", C_Damage);
     CCLOG("Current Monster Health : %f", Current_Health);
-    if( Current_Health <= 0)
-    {
-        CCLOG("Monster Killed");
-        MonsterKilled();
-    }
+    
 }

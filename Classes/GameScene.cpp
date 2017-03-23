@@ -55,14 +55,13 @@ bool GameScene::init()
     CharacterSelectScene::Player1.SetCharacterStat();
     //==Monseter Stat ==//
     
-    /*
     //== Battle Phase ==//
-    //Monster Killed
-    if ( GameScene::SpawnedMonster.MonsterKilled() )
-    {
-        CharacterSelectScene::Player1.GainExperience( GameScene::SpawnedMonster.GetMonsterLevel() );
-    }
-    */
+    CallFuncN* MonsterHealthCheck = CallFuncN::create( callfunc_selector(GameScene::MonsterAI) );
+    DelayTime* DT = DelayTime::create(3.0f);
+    
+    Spawn* MonsterAI = Spawn::create(DT, MonsterHealthCheck, nullptr);
+    RepeatForever* MonsterAI_Repeat = RepeatForever::create(MonsterAI);
+    this -> runAction(MonsterAI_Repeat);
     return true;
 }
 
@@ -71,7 +70,7 @@ bool GameScene::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
     TouchBeganX = touch -> getLocation().x;
     TouchBeganY = touch -> getLocation().y;
     
-    CCLOG("Touch Began");
+    //CCLOG("Touch Began");
     
     return true;
 }
@@ -81,7 +80,7 @@ void GameScene::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
     TouchMovedX = touch -> getLocation().x;
     TouchMovedY = touch -> getLocation().y;
     
-    CCLOG("Moved : (%f, %f)", TouchMovedX, TouchMovedY);
+    //CCLOG("Moved : (%f, %f)", TouchMovedX, TouchMovedY);
 }
 
 void GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
@@ -89,8 +88,8 @@ void GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
     TouchEndedX = touch -> getLocation().x;
     TouchEndedY = touch -> getLocation().y;
     
-    CCLOG("Began : (%f, %f)", TouchBeganX, TouchBeganY);
-    CCLOG("Ended : (%f, %f)", TouchEndedX, TouchEndedY);
+    //CCLOG("Began : (%f, %f)", TouchBeganX, TouchBeganY);
+    //CCLOG("Ended : (%f, %f)", TouchEndedX, TouchEndedY);
     
     //calculate multiplyer
     float TouchDistance = sqrtf( powf((TouchBeganX - TouchEndedX)/visibleSize.width, 2)
@@ -107,12 +106,54 @@ void GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
     else
     {
         //when touch ended damage function began
-        float Damage;
-        Damage = CharacterSelectScene::Player1.GivePhysicalAttackToMonster(TouchDistance);
-        GameScene::SpawnedMonster.SetTakenDamageFromCharacter(Damage);
+        float C_Damage;
+        C_Damage = CharacterSelectScene::Player1.GivePhysicalAttackToMonster(TouchDistance);
+        GameScene::SpawnedMonster.SetTakenDamageFromCharacter(C_Damage);
         
         //attack animation
     }
-    
-    
 }
+
+void GameScene::MonsterAI()
+{
+    //check monster health consistantly
+    //if monster is dead
+    if ( GameScene::SpawnedMonster.IsMonsterKilled() )
+    {
+        //give experience to the player
+        CharacterSelectScene::Player1.GainExperience( GameScene::SpawnedMonster.GetMonsterLevel() );
+        //monster level up and re-charge health
+        GameScene::SpawnedMonster.MonsterKilled();
+        
+        return;
+    }
+    //if monster is alive
+    else
+    {
+        //load monster attack rate
+        float MonsterAttackRate = GameScene::SpawnedMonster.GetAttackRate();
+        //set delay time = attack time
+        DelayTime* M_AttackRate = DelayTime::create( MonsterAttackRate );
+        //MonsterAttack
+        CallFunc* DoMonsterAttack = CallFuncN::create( callfunc_selector(GameScene::DoMonsterAttack) );
+        
+        //create action do both
+        Spawn* M_Action = Spawn::create(M_AttackRate, DoMonsterAttack, nullptr);
+        this -> runAction(M_Action);
+    
+        return;
+    }
+}
+
+void GameScene::DoMonsterAttack()
+{
+    //do the damage
+    float M_Damage;
+    M_Damage = GameScene::SpawnedMonster.GivePhysicalAttackToCharacter();
+    CharacterSelectScene::Player1.SetTakenDamageFromMonster(M_Damage);
+    
+    //reschedule MonsterAI()
+    return;
+}
+
+

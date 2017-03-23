@@ -78,7 +78,7 @@ void LoadingSequence::GoToMenuScene(float dt)
 {
     auto scene = MenuScene::createScene();
     CCLOG( "Loading complete");
-    Director::getInstance()->replaceScene(TransitionFade::create(DISPALY_TIME_OF_LOADING_SEQUENCE, scene));
+    Director::getInstance()->replaceScene( TransitionFade::create(DISPALY_TIME_OF_LOADING_SEQUENCE, scene) );
 }
 
 /*

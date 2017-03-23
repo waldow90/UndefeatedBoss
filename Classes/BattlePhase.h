@@ -24,7 +24,7 @@ namespace BattlePhase {
         //==Stans of Character at battlephase==//
         float GivePhysicalAttackToMonster(float TouchDistance);
         //void GiveMagicalAttackToMonster();
-        //void DefenseAgainstMonster();
+        
         //take damage from the monster
         void SetTakenDamageFromMonster(float M_Damage);
         //==EVENT==//
@@ -41,7 +41,7 @@ namespace BattlePhase {
         float Experience_Current;
         
         //survival
-        float Currnet_Health;
+        float Current_Health;
         float Max_Health;
         //physicalDamage
         float PhysicalPower;
@@ -52,12 +52,17 @@ namespace BattlePhase {
     {
     public:
         //==Stans of Monster at battle phase==//
+        float GetAttackRate();
         float GivePhysicalAttackToCharacter();
+        
         void SetTakenDamageFromCharacter(float C_Damage);
+        
         //==Setting the stat of a monster==//
         void MonsterLevelUp();
         int GetMonsterLevel();
         //==Event==//
+        //Event Checker
+        bool IsMonsterKilled();
         bool MonsterKilled();
     protected:
         //==Type Of Monster==//
@@ -69,6 +74,7 @@ namespace BattlePhase {
         float Max_Health = 5;
         //physical damage
         float PhysicalPower = 1;
+        float AttackRate = 300000.f;
     };
 }
 

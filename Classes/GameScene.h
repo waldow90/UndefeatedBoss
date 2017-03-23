@@ -38,6 +38,9 @@ public:
     //== Variables for Battle ==//
     //create Monster Class
     static Monster SpawnedMonster;
+    //for monster take action
+    void MonsterAI(); 
+    void DoMonsterAttack();
     
 };
 
