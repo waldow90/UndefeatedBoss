@@ -30,6 +30,7 @@ namespace BattlePhase {
         //==EVENT==//
         void GainExperience( int MonsterLevel );
         bool LevelUp();
+        bool IsPlayerDied();
         
     protected:
         //==CHARACTER SELECTION==//
@@ -74,7 +75,7 @@ namespace BattlePhase {
         float Max_Health = 5;
         //physical damage
         float PhysicalPower = 1;
-        float AttackRate = 300000.f;
+        float AttackRate = 3.0;
     };
 }
 

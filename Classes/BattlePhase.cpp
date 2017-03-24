@@ -75,6 +75,18 @@ void Player::SetTakenDamageFromMonster(float M_Damage)
     return;
 }
 
+bool Player::IsPlayerDied()
+{
+    if( Current_Health < 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 //== Stat Assosiated Functions in battle phase ==//
 bool Player::LevelUp()
 {
@@ -85,11 +97,7 @@ bool Player::LevelUp()
     // 1. Test
     if( !strcmp( Name.getCString() , "Test") )// if text is matched strcmp returns 0
     {
-        Max_Health += 5;
-        //restore health to full
-        Current_Health = Max_Health;
-        PhysicalPower += 1;
-        Experience_Max += 5;
+        TEST_PLAYER_STAT_CHANGE;
     }
     
     PLAYER_STAT_CHECK;
@@ -97,7 +105,7 @@ bool Player::LevelUp()
     return true;
 }
 
-void Player::GainExperience(int MonsterLevel)
+void Player::GainExperience(int MonsterLevel)//when the monster dies
 {
     //load experience amplifier
     float GivenExperience = EXPERIENCE_GIVEN_TO_CHARACTER;
@@ -109,6 +117,10 @@ void Player::GainExperience(int MonsterLevel)
     {
         LevelUp();
     }
+    
+    //restore player health to full
+    Current_Health = Max_Health;
+    
     return;
 }
 
@@ -119,8 +131,7 @@ void Monster::MonsterLevelUp()
     Level += 1;
     
     //upgrade maxhealth of monster
-    Max_Health += 5;
-    PhysicalPower += 1;
+    MONSTER_STAT_CHANGE;
 }
 
 int Monster::GetMonsterLevel()

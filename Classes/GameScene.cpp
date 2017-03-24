@@ -8,8 +8,12 @@
 
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
+//for valance patch
 #include "Definition.h"
+//for player/monster functions
 #include "BattlePhase.h"
+//when player dies, trans scene to menuscene
+#include "MenuScene.h"
 //the selected character name is delivered
 #include "CharacterSelectScene.h"
 
@@ -56,12 +60,20 @@ bool GameScene::init()
     //==Monseter Stat ==//
     
     //== Battle Phase ==//
-    CallFuncN* MonsterHealthCheck = CallFuncN::create( callfunc_selector(GameScene::MonsterAI) );
-    DelayTime* DT = DelayTime::create(3.0f);
     
-    Spawn* MonsterAI = Spawn::create(DT, MonsterHealthCheck, nullptr);
-    RepeatForever* MonsterAI_Repeat = RepeatForever::create(MonsterAI);
-    this -> runAction(MonsterAI_Repeat);
+    //== Monster ==//
+    //load monster attack rate
+    float MonsterAttackRate = GameScene::SpawnedMonster.GetAttackRate();
+    DelayTime* M_AttackRate = DelayTime::create( MonsterAttackRate );
+    //MonsterAttack
+    CallFunc* DoMonsterAttack = CallFuncN::create( callfunc_selector(GameScene::DoMonsterAttack) );
+    //create action do both
+    Spawn* M_Action = Spawn::create(M_AttackRate, DoMonsterAttack, nullptr);
+    //repeat forever
+    RepeatForever* M_Action_Repeat = RepeatForever::create(M_Action);
+    this -> runAction(M_Action_Repeat);
+    
+    //init end
     return true;
 }
 
@@ -111,40 +123,43 @@ void GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
         GameScene::SpawnedMonster.SetTakenDamageFromCharacter(C_Damage);
         
         //attack animation
-    }
-}
+        
+        //check monster health consistantly
+        //if monster is dead
+        if ( GameScene::SpawnedMonster.IsMonsterKilled() )
+        {
+            //give experience to the player
+            CharacterSelectScene::Player1.GainExperience( GameScene::SpawnedMonster.GetMonsterLevel() );
+            //monster level up and re-charge health
+            GameScene::SpawnedMonster.MonsterKilled();
+            
+            return;
+        }
+        //if monster is alive
+        else
+        {
+            return;
+        }
+        
+    }//Physical Damage
+}// touch ended
 
-void GameScene::MonsterAI()
+//== Event ==//
+void GameScene::GameOver()
 {
-    //check monster health consistantly
-    //if monster is dead
-    if ( GameScene::SpawnedMonster.IsMonsterKilled() )
-    {
-        //give experience to the player
-        CharacterSelectScene::Player1.GainExperience( GameScene::SpawnedMonster.GetMonsterLevel() );
-        //monster level up and re-charge health
-        GameScene::SpawnedMonster.MonsterKilled();
-        
-        return;
-    }
-    //if monster is alive
-    else
-    {
-        //load monster attack rate
-        float MonsterAttackRate = GameScene::SpawnedMonster.GetAttackRate();
-        //set delay time = attack time
-        DelayTime* M_AttackRate = DelayTime::create( MonsterAttackRate );
-        //MonsterAttack
-        CallFunc* DoMonsterAttack = CallFuncN::create( callfunc_selector(GameScene::DoMonsterAttack) );
-        
-        //create action do both
-        Spawn* M_Action = Spawn::create(M_AttackRate, DoMonsterAttack, nullptr);
-        this -> runAction(M_Action);
+    CCLOG("GameOver");
+    //stop monster action = attack
+    this -> stopAllActions();
     
-        return;
-    }
+    //go to menuscene
+    //Scene transit
+    CCLOG("Go To MenuScene");
+    auto scene = MenuScene::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(DISPALY_TIME_OF_LOADING_SEQUENCE, scene));
+    return;
 }
 
+//== Monster Take Actions ==//
 void GameScene::DoMonsterAttack()
 {
     //do the damage
@@ -152,8 +167,16 @@ void GameScene::DoMonsterAttack()
     M_Damage = GameScene::SpawnedMonster.GivePhysicalAttackToCharacter();
     CharacterSelectScene::Player1.SetTakenDamageFromMonster(M_Damage);
     
-    //reschedule MonsterAI()
+    if( CharacterSelectScene::Player1.IsPlayerDied() )
+    {
+        GameOver();
+        return;
+    }
+    
     return;
 }
+
+
+
 
 

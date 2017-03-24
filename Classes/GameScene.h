@@ -27,6 +27,9 @@ public:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
     
+    //== Event ==//
+    void GameOver();
+    
     //==Assosiated with Touch==//
     bool onTouchBegan( cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchMoved( cocos2d::Touch* touch, cocos2d::Event* event);
@@ -35,11 +38,11 @@ public:
     float TouchBeganX, TouchBeganY;
     float TouchMovedX, TouchMovedY;
     float TouchEndedX, TouchEndedY;
+    
     //== Variables for Battle ==//
     //create Monster Class
     static Monster SpawnedMonster;
     //for monster take action
-    void MonsterAI(); 
     void DoMonsterAttack();
     
 };
